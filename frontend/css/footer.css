@@ -1,0 +1,171 @@
+/* ============================================================
+   FOOTER.CSS — Pie de página
+   Nombre + año · Social links · Créditos de tecnología
+   ============================================================ */
+
+/* ─── FOOTER WRAPPER ─────────────────────────────────────── */
+.footer {
+  background-color: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+/* ─── INNER SUPERIOR — nombre + social links ─────────────── */
+.footer__top {
+  padding-block: var(--space-12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer__top {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: var(--space-6);
+  }
+}
+
+/* ─── LOGO / NOMBRE ──────────────────────────────────────── */
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .footer__brand {
+    align-items: flex-start;
+  }
+}
+
+.footer__logo {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color var(--transition-theme);
+}
+
+.footer__logo-dot {
+  color: var(--color-primary);
+}
+
+.footer__logo:hover {
+  color: var(--color-primary);
+}
+
+.footer__tagline {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--footer-text);
+  transition: color var(--transition-theme);
+}
+
+/* ─── NAVEGACIÓN FOOTER ──────────────────────────────────── */
+/* Links de sección repetidos en el footer — útil en desktop */
+.footer__nav {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .footer__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-6);
+  }
+}
+
+.footer__nav-link {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--footer-text);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer__nav-link:hover {
+  color: var(--color-primary);
+}
+
+/* ─── SOCIAL LINKS ───────────────────────────────────────── */
+/* Reutiliza .social-link de components.css */
+.footer__social {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ─── SEPARADOR ──────────────────────────────────────────── */
+.footer__divider {
+  width: 100%;
+  height: 1px;
+  background-color: var(--footer-border);
+  transition: background-color var(--transition-theme);
+}
+
+/* ─── BOTTOM — copyright + créditos ─────────────────────── */
+.footer__bottom {
+  padding-block: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .footer__bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    gap: var(--space-4);
+  }
+}
+
+/* Copyright */
+.footer__copyright {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--footer-text);
+  transition: color var(--transition-theme);
+}
+
+.footer__copyright strong {
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+}
+
+/* Créditos de tecnología */
+.footer__credits {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--footer-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  transition: color var(--transition-theme);
+}
+
+/* Corazón con color primary */
+.footer__heart {
+  color: var(--color-primary);
+  font-size: var(--text-sm);
+  line-height: 1;
+}
+
+/* Tecnologías resaltadas */
+.footer__credits span {
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+}

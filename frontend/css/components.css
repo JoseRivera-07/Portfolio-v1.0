@@ -1,0 +1,412 @@
+/* ============================================================
+   COMPONENTS.CSS — Componentes reutilizables
+   Botones · Badges · Cards · Inputs
+   ============================================================ */
+
+/* ════════════════════════════════════════════════════════════
+   BOTONES
+   Variantes: .btn-primary (sólido) · .btn-outline
+   Tamaños:   .btn-sm · .btn (base) · .btn-lg
+   ════════════════════════════════════════════════════════════ */
+
+/* Base compartida — todas las variantes la heredan */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+
+  /* Sin border-radius — diseño minimalista angular */
+  border-radius: var(--radius-none);
+  border: 2px solid transparent;
+
+  padding: var(--space-3) var(--space-6);   /* 12px 24px */
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+
+  /* Evitar selección de texto al hacer clic */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+/* Foco accesible */
+.btn:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+/* ─── Botón primario (sólido) ────────────────────────────── */
+/* Fondo negro/blanco según tema — el más destacado */
+.btn-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: var(--btn-primary-bg);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* ─── Botón outlined ─────────────────────────────────────── */
+/* Borde + texto, sin fondo — secundario */
+.btn-outline {
+  background-color: transparent;
+  color: var(--btn-outline-text);
+  border-color: var(--btn-outline-border);
+}
+
+.btn-outline:hover {
+  background-color: var(--btn-outline-hover-bg);
+  color: var(--btn-outline-hover-text);
+  border-color: var(--btn-outline-hover-bg);
+}
+
+/* ─── Botón acento (verde) ───────────────────────────────── */
+.btn-accent {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border-color: var(--color-primary);
+}
+
+.btn-accent:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+}
+
+/* ─── Tamaños ────────────────────────────────────────────── */
+.btn-sm {
+  font-size: var(--text-xs);
+  padding: var(--space-2) var(--space-4);
+}
+
+.btn-lg {
+  font-size: var(--text-base);
+  padding: var(--space-4) var(--space-8);
+}
+
+/* ─── Botón icono (cuadrado) ─────────────────────────────── */
+.btn-icon {
+  padding: var(--space-3);
+  aspect-ratio: 1;
+}
+
+/* ─── Botón deshabilitado ────────────────────────────────── */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ─── Grupo de botones ───────────────────────────────────── */
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   BADGES — Etiquetas de tecnologías y skills
+   ════════════════════════════════════════════════════════════ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+
+  background-color: var(--badge-bg);
+  color: var(--badge-text);
+
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme);
+}
+
+/* Variante neutra — gris */
+.badge-neutral {
+  background-color: var(--bg-surface);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+
+/* Variante oscura */
+.badge-dark {
+  background-color: var(--text-primary);
+  color: var(--bg-page);
+}
+
+/* Contenedor para grupo de badges */
+.badge-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   CARDS — Contenedores de proyectos, skills, experiencia
+   ════════════════════════════════════════════════════════════ */
+
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  /* Sin sombra en light mode — minimalismo */
+  /* Transición suave al cambiar tema */
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme),
+    transform var(--transition-fast);
+}
+
+/* Hover sutil — sube 2px y borde con acento */
+.card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-primary);
+}
+
+/* Card sin hover — estática, para contenido informativo */
+.card-static {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+/* Header de la card */
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+/* Cuerpo */
+.card-body {
+  flex: 1;
+}
+
+/* Footer de la card — links, botones */
+.card-footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: border-color var(--transition-theme);
+}
+
+/* Título de la card */
+.card-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  transition: color var(--transition-theme);
+}
+
+/* Descripción */
+.card-description {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   INPUTS — Formulario de contacto (preparados para Módulo 03)
+   ════════════════════════════════════════════════════════════ */
+
+/* Wrapper del campo — label + input + mensaje de error */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* Label */
+.form-label {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  transition: color var(--transition-theme);
+}
+
+/* Input base — text, email, etc. */
+.input {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  color: var(--input-text);
+
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+
+  padding: var(--space-3) var(--space-4);
+  line-height: var(--leading-normal);
+
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-theme),
+    color var(--transition-theme);
+
+  /* Quitar outline nativo — usamos border */
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--input-placeholder);
+}
+
+.input:focus {
+  border-color: var(--input-border-focus);
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  color: var(--input-text);
+
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+
+  padding: var(--space-3) var(--space-4);
+  line-height: var(--leading-relaxed);
+  min-height: 140px;
+  resize: vertical;
+
+  outline: none;
+  transition:
+    border-color var(--transition-fast),
+    background-color var(--transition-theme),
+    color var(--transition-theme);
+}
+
+.textarea::placeholder {
+  color: var(--input-placeholder);
+}
+
+.textarea:focus {
+  border-color: var(--input-border-focus);
+}
+
+/* Mensaje de error */
+.form-error {
+  font-size: var(--text-xs);
+  color: #EF4444;
+  display: none;
+}
+
+.form-field.has-error .input,
+.form-field.has-error .textarea {
+  border-color: #EF4444;
+}
+
+.form-field.has-error .form-error {
+  display: block;
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   LINK SOCIAL — Íconos de GitHub, LinkedIn, etc.
+   ════════════════════════════════════════════════════════════ */
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-none);
+
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.social-link:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.social-link svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Grupo de social links */
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   TAG / CHIP — Versión más pequeña que badge, sin mayúsculas
+   ════════════════════════════════════════════════════════════ */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme),
+    border-color var(--transition-theme);
+}

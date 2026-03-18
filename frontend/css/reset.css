@@ -1,0 +1,185 @@
+/* ============================================================
+   RESET.CSS — Reset moderno + box-sizing + defaults útiles
+   Basado en: Andy Bell's Modern CSS Reset + mejoras propias
+   ============================================================ */
+
+/* ─── BOX SIZING ─────────────────────────────────────────── */
+/* Todos los elementos incluyen padding y border en su ancho */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ─── RESET DE MÁRGENES Y PADDINGS ──────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── ROOT Y BODY ────────────────────────────────────────── */
+html {
+  /* Scroll suave para anclas */
+  scroll-behavior: smooth;
+  /* Evita zoom en inputs en iOS */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Altura mínima completa */
+  block-size: 100%;
+}
+
+body {
+  min-height: 100vh;
+  /* Fuente base — se extiende en typography.css */
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+  /* Colores semánticos del tema activo */
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  /* Transición suave al cambiar de tema */
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme);
+  /* Mejora el renderizado de fuentes */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+/* ─── TIPOGRAFÍA BASE ────────────────────────────────────── */
+/* Los headings heredan la fuente por defecto (se sobreescribe en typography.css) */
+h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Los párrafos no tienen margen extra */
+p {
+  overflow-wrap: break-word;
+}
+
+/* ─── LISTAS ─────────────────────────────────────────────── */
+/* Reset para listas que tienen rol semántico (nav, etc.) */
+ul[role='list'],
+ol[role='list'] {
+  list-style: none;
+}
+
+/* Lista estándar sin estilos visuales */
+ul, ol {
+  list-style: none;
+}
+
+/* ─── LINKS ──────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* ─── IMÁGENES Y MEDIA ───────────────────────────────────── */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  /* Evita que las imágenes rompan su contenedor */
+  height: auto;
+  /* Mejor renderizado */
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* SVG hereda el color del texto padre */
+svg {
+  fill: currentColor;
+}
+
+/* ─── FORMULARIOS ────────────────────────────────────────── */
+/* Inputs y botones heredan la tipografía del sistema */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  /* Resetear estilos nativos del navegador */
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* Asegurar que no tengan estilos de sistema */
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Textarea no se redimensiona horizontalmente */
+textarea {
+  resize: vertical;
+  overflow: auto;
+}
+
+/* ─── TABLAS ─────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* ─── ELEMENTOS DE BLOQUE ────────────────────────────────── */
+/* HR como separador limpio */
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 0;
+}
+
+/* ─── ACCESIBILIDAD ──────────────────────────────────────── */
+/* Foco visible para navegación por teclado */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Ocultar foco cuando se usa ratón */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Clase utilitaria para ocultar visualmente pero mantener en el DOM (screen readers) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ─── RESPETO POR PREFERENCIAS DEL USUARIO ──────────────── */
+/* Desactiva animaciones para quienes lo prefieren */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

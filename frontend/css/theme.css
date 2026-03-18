@@ -1,0 +1,213 @@
+/* ============================================================
+   THEME.CSS — Modo claro / oscuro
+   Activado con [data-theme="dark"] en <html>
+   Los colores base ya viven en variables.css.
+   Este archivo cubre: transiciones globales, overrides
+   visuales por componente y detalles de refinamiento de tema.
+   ============================================================ */
+
+/* ─── TRANSICIÓN GLOBAL DE TEMA ─────────────────────────── */
+/* Elementos que deben transicionar suavemente al cambiar tema.
+   Se declaran explícitamente para no forzar transición en TODO
+   (lo cual afectaría al rendimiento y a animaciones JS).      */
+
+body,
+.navbar,
+.navbar__mobile-menu,
+.footer,
+.hero,
+.section-alt,
+.card,
+.card-static,
+.card-footer,
+.input,
+.textarea,
+.social-link,
+.badge,
+.badge-neutral,
+.tag,
+.divider,
+.footer__divider,
+.hero__divider,
+.section-header p {
+  transition:
+    background-color var(--transition-theme),
+    color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+/* ─── OVERRIDES LIGHT MODE (explícitos) ─────────────────── */
+/* El light mode es el default — aquí reforzamos lo necesario */
+
+[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* Scrollbar — light mode */
+[data-theme="light"] {
+  scrollbar-color: var(--color-gray-300) transparent;
+  scrollbar-width: thin;
+}
+
+[data-theme="light"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-theme="light"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="light"]::-webkit-scrollbar-thumb {
+  background-color: var(--color-gray-300);
+  border-radius: var(--radius-full);
+}
+
+/* Selección de texto — light */
+[data-theme="light"] ::selection {
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary-dark);
+}
+
+/* ─── OVERRIDES DARK MODE ────────────────────────────────── */
+
+[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+/* Scrollbar — dark mode */
+[data-theme="dark"] {
+  scrollbar-color: var(--color-border-dark) transparent;
+  scrollbar-width: thin;
+}
+
+[data-theme="dark"]::-webkit-scrollbar {
+  width: 6px;
+}
+
+[data-theme="dark"]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme="dark"]::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-dark);
+  border-radius: var(--radius-full);
+}
+
+/* Selección de texto — dark */
+[data-theme="dark"] ::selection {
+  background-color: rgba(16, 185, 129, 0.25);
+  color: var(--color-primary-light);
+}
+
+/* ─── NAVBAR — dark mode ─────────────────────────────────── */
+/* Añade blur de fondo para efecto glassmorphism sutil */
+[data-theme="dark"] .navbar {
+  background-color: rgba(26, 26, 26, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="dark"] .navbar__mobile-menu {
+  background-color: rgba(26, 26, 26, 0.98);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ─── LIGHT MODE: navbar con blur también ────────────────── */
+[data-theme="light"] .navbar {
+  background-color: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme="light"] .navbar__mobile-menu {
+  background-color: rgba(255, 255, 255, 0.98);
+}
+
+/* ─── HERO — dark mode ───────────────────────────────────── */
+/* El terminal de código ya tiene colores propios (fijo oscuro),
+   pero ajustamos el borde para que sea más visible */
+[data-theme="dark"] .hero__code-block {
+  border-color: #3D3D3D;
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.08);
+}
+
+/* ─── SECCIÓN ALT — dark mode ────────────────────────────── */
+[data-theme="dark"] .section-alt {
+  background-color: #111111;
+}
+
+/* ─── CARDS — dark mode ──────────────────────────────────── */
+[data-theme="dark"] .card:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.12);
+}
+
+/* ─── INPUTS — dark mode ─────────────────────────────────── */
+[data-theme="dark"] .input:focus,
+[data-theme="dark"] .textarea:focus {
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.1);
+}
+
+/* ─── BOTÓN PRIMARIO — dark mode ─────────────────────────── */
+/* En dark, el botón primario es blanco con texto negro */
+[data-theme="dark"] .btn-primary:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+/* ─── FOCUS VISIBLE — ambos temas ───────────────────────── */
+/* El foco siempre usa el verde de la marca */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── LINK ACTIVO en navbar — dark mode ─────────────────── */
+[data-theme="dark"] .navbar__nav-link.active,
+[data-theme="dark"] .navbar__mobile-link.active {
+  color: var(--color-white);
+}
+
+/* ─── BADGE — dark mode, más visible ─────────────────────── */
+[data-theme="dark"] .badge {
+  border: 1px solid rgba(52, 211, 153, 0.2);
+}
+
+/* ─── FOOTER — dark mode ─────────────────────────────────── */
+[data-theme="dark"] .footer {
+  background-color: #0D0D0D;
+  border-top-color: var(--color-border-dark);
+}
+
+/* ─── SCROLL INDICATOR — ambos temas ────────────────────── */
+/* Asegurar visibilidad del scroll hint */
+.hero__scroll {
+  color: var(--text-muted);
+}
+
+[data-theme="dark"] .hero__scroll {
+  color: #4B5563;
+}
+
+[data-theme="dark"] .hero__scroll:hover {
+  color: var(--color-primary-light);
+}
+
+/* ─── CÓDIGO INLINE — dark mode ──────────────────────────── */
+[data-theme="dark"] code {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: var(--color-border-dark);
+}
+
+/* ─── PLACEHOLDER SECTIONS — visual mínimo ──────────────── */
+/* Las secciones placeholder tienen altura mínima para que
+   los links de navegación funcionen correctamente           */
+#proyectos,
+#skills,
+#experiencia,
+#contacto {
+  min-height: 300px;
+}

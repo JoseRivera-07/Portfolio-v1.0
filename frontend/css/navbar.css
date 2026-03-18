@@ -1,0 +1,289 @@
+/* ============================================================
+   NAVBAR.CSS — Navegación fija superior
+   Logo · Links · Toggle de tema · Hamburguesa mobile
+   ============================================================ */
+
+/* ─── NAVBAR WRAPPER ─────────────────────────────────────── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-fixed);
+
+  height: var(--navbar-height);           /* 64px */
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+/* Inner: centra el contenido con el container global */
+.navbar__inner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+/* ─── LOGO ───────────────────────────────────────────────── */
+.navbar__logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;                         /* No se comprime */
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: color var(--transition-theme);
+}
+
+.navbar__logo-text {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-extrabold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-primary);
+  line-height: 1;
+  transition: color var(--transition-theme);
+}
+
+/* El punto decorativo en --color-primary */
+.navbar__logo-dot {
+  color: var(--color-primary);
+}
+
+.navbar__logo:hover .navbar__logo-text {
+  color: var(--color-primary);
+}
+
+/* ─── LINKS DE NAVEGACIÓN (desktop) ─────────────────────── */
+.navbar__nav {
+  display: none;                          /* Oculto en mobile */
+  align-items: center;
+  gap: var(--space-1);
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .navbar__nav {
+    display: flex;
+  }
+}
+
+.navbar__nav-item {
+  position: relative;
+}
+
+.navbar__nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--nav-text);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+  position: relative;
+}
+
+/* Línea de subrayado animada en hover */
+.navbar__nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: var(--space-3);
+  right: var(--space-3);
+  height: 2px;
+  background-color: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform var(--transition-fast);
+  border-radius: var(--radius-full);
+}
+
+.navbar__nav-link:hover {
+  color: var(--nav-text-hover);
+}
+
+.navbar__nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* Estado activo — link de la sección actual */
+.navbar__nav-link.active {
+  color: var(--nav-text-active);
+  font-weight: var(--weight-semibold);
+}
+
+.navbar__nav-link.active::after {
+  transform: scaleX(1);
+}
+
+/* ─── ACCIONES (lado derecho) ────────────────────────────── */
+/* Agrupa el toggle de tema + botón hamburguesa */
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* ─── TOGGLE DE TEMA ─────────────────────────────────────── */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-none);     /* Angular — coherente con botones */
+  color: var(--text-muted);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* Íconos de sol y luna — solo se muestra el correcto */
+.theme-toggle__sun,
+.theme-toggle__moon {
+  width: 16px;
+  height: 16px;
+  transition: opacity var(--transition-fast), transform var(--transition-base);
+}
+
+/* Light mode: mostrar luna (para cambiar a oscuro) */
+.theme-toggle__sun  { display: none; }
+.theme-toggle__moon { display: block; }
+
+/* Dark mode: mostrar sol (para cambiar a claro) */
+[data-theme="dark"] .theme-toggle__sun  { display: block; }
+[data-theme="dark"] .theme-toggle__moon { display: none; }
+
+/* ─── BOTÓN HAMBURGUESA (mobile) ─────────────────────────── */
+.navbar__hamburger {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-none);
+  cursor: pointer;
+  padding: var(--space-2);
+  transition:
+    border-color var(--transition-fast);
+}
+
+/* Ocultar hamburguesa en desktop */
+@media (min-width: 768px) {
+  .navbar__hamburger {
+    display: none;
+  }
+}
+
+.navbar__hamburger:hover {
+  border-color: var(--text-primary);
+}
+
+/* Las 3 líneas del ícono hamburguesa */
+.navbar__hamburger-line {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background-color: var(--text-primary);
+  border-radius: var(--radius-full);
+  transition:
+    transform var(--transition-base),
+    opacity var(--transition-base);
+  transform-origin: center;
+}
+
+/* Animación hamburguesa → X cuando el menú está abierto */
+.navbar__hamburger[aria-expanded="true"] .navbar__hamburger-line:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+}
+
+.navbar__hamburger[aria-expanded="true"] .navbar__hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.navbar__hamburger[aria-expanded="true"] .navbar__hamburger-line:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+}
+
+/* ─── MENÚ MOBILE ────────────────────────────────────────── */
+.navbar__mobile-menu {
+  display: none;                          /* Oculto por defecto */
+  position: fixed;
+  top: var(--navbar-height);
+  left: 0;
+  right: 0;
+  background-color: var(--nav-bg);
+  border-bottom: 1px solid var(--nav-border);
+  padding: var(--space-4) 0;
+  z-index: var(--z-fixed);
+  transition:
+    background-color var(--transition-theme),
+    border-color var(--transition-theme);
+}
+
+/* Se activa via JS añadiendo clase .is-open */
+.navbar__mobile-menu.is-open {
+  display: block;
+}
+
+/* Ocultar siempre en desktop */
+@media (min-width: 768px) {
+  .navbar__mobile-menu {
+    display: none !important;
+  }
+}
+
+.navbar__mobile-nav {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar__mobile-link {
+  display: block;
+  padding: var(--space-4) var(--space-6);
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  color: var(--nav-text);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.navbar__mobile-link:hover,
+.navbar__mobile-link.active {
+  color: var(--color-primary);
+  border-left-color: var(--color-primary);
+  background-color: var(--bg-overlay);
+}

@@ -61,13 +61,21 @@ function transitionOut() {
   return new Promise(resolve => {
     if (prefersReducedMotion()) return resolve();
 
+    // Si #app está vacío no hay nada que animar — resolver de inmediato
+    if (!appEl.innerHTML.trim()) return resolve();
+
     appEl.classList.add('view-exit');
 
-    // Cuando la transición CSS termina, resolvemos
-    appEl.addEventListener('transitionend', resolve, { once: true });
+    // Timeout de seguridad: si transitionend no dispara en 300ms
+    // (ej: pestaña nueva, elemento oculto, etc.) resolvemos igual
+    const fallback = setTimeout(resolve, 300);
+
+    appEl.addEventListener('transitionend', () => {
+      clearTimeout(fallback);
+      resolve();
+    }, { once: true });
   });
 }
-
 /**
  * Fade IN: aplica .view-enter, inserta el HTML, luego
  * añade .view-enter-active en el siguiente frame para
@@ -181,7 +189,6 @@ const notFoundPage = {
  * @param {boolean} pushState — false cuando viene de popstate
  */
 async function navigate(path, pushState = true) {
-
   // 1. Normalizar la ruta: eliminar trailing slash excepto en '/'
   const normalizedPath = path.length > 1 ? path.replace(/\/$/, '') : path;
 
@@ -290,17 +297,28 @@ window.addEventListener('popstate', (e) => {
 });
 
 /* ══════════════════════════════════════════════════════════
-   ARRANQUE INICIAL
-   Renderiza la vista correspondiente a la URL actual.
-   Funciona tanto en '/' como en '/proyectos' (recarga directa).
+   ARRANQUE INICIAL — con guardia de DOM
 ══════════════════════════════════════════════════════════ */
+function boot() {
+  // Guardia: si #app no existe todavía, abortamos
+  if (!appEl) {
+    console.error('[Router] #app no encontrado en el DOM');
+    return;
+  }
 
-// Reemplazar el state inicial para que tenga nuestro formato
-history.replaceState(
-  { path: window.location.pathname },
-  '',
-  window.location.pathname
-);
+  history.replaceState(
+    { path: window.location.pathname },
+    '',
+    window.location.pathname
+  );
 
-// Navegar a la ruta actual sin pushState (ya estamos en ella)
-navigate(window.location.pathname, false);
+  navigate(window.location.pathname, false);
+}
+
+// Los módulos ES esperan al DOMContentLoaded automáticamente,
+// pero añadimos la guardia explícita por si acaso
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
+} else {
+  boot();
+}

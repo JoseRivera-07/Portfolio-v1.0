@@ -244,7 +244,7 @@ async function navigate(path, pushState = true) {
 
   // 14. Ejecutar la lógica post-render de la página (eventos, etc.)
   try {
-    page.init();
+    await page.init();
   } catch (err) {
     console.error('[Router] Error en page.init():', err);
   }

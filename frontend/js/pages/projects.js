@@ -1,17 +1,9 @@
 /* ============================================================
    PROJECTS.JS — Vista: /proyectos
    Módulo 03 · Jose Rivera Portfolio
-   ============================================================
-   Responsabilidades:
-     - render(): HTML base con encabezado y contenedor del grid
-     - init(): orquesta los 4 estados de UI:
-         1. LOADING  — skeleton cards mientras se hace fetch
-         2. SUCCESS  — cards reales con animación en cascada
-         3. EMPTY    — mensaje si no hay repos válidos
-         4. ERROR    — mensaje amigable + botón reintentar
    ============================================================ */
 
-import { fetchRepos } from '../services/github.js';
+import { fetchRepos, fetchAllOrgRepos } from '../services/github.js';
 
 
 export default {
@@ -33,6 +25,7 @@ export default {
             </p>
           </header>
 
+          <!-- Grid repos personales -->
           <div
             id="projects-grid"
             class="projects-grid"
@@ -40,37 +33,73 @@ export default {
             aria-atomic="true"
           ></div>
 
+          <!-- Sección organizaciones -->
+          <div id="orgs-section" class="orgs-section" aria-live="polite">
+            <div class="orgs-section__header">
+              <span class="projects-header__label">Organizaciones</span>
+              <h2 class="orgs-section__title">Trabajo en equipo</h2>
+            </div>
+            <div
+              id="orgs-grid"
+              class="projects-grid"
+              aria-atomic="true"
+            ></div>
+          </div>
+
         </div>
       </section>
     `;
   },
 
   async init() {
-    const grid = document.getElementById('projects-grid');
-    if (!grid) return;
+    const grid     = document.getElementById('projects-grid');
+    const orgsGrid = document.getElementById('orgs-grid');
+    if (!grid || !orgsGrid) return;
 
-    renderSkeletons(grid);
+    // Mostrar skeletons en ambos grids simultáneamente
+    renderSkeletons(grid, 6);
+    renderSkeletons(orgsGrid, 3);
 
-    try {
-      const repos = await fetchRepos();
+    // Fetch paralelo: repos personales + repos de orgs
+    const [reposResult, orgsResult] = await Promise.allSettled([
+      fetchRepos(),
+      fetchAllOrgRepos(),
+    ]);
 
+    // — Repos personales —
+    if (reposResult.status === 'fulfilled') {
+      const repos = reposResult.value;
       if (repos.length === 0) {
-        renderEmpty(grid);
+        renderEmpty(grid, 'personal');
       } else {
         renderCards(grid, repos);
       }
+    } else {
+      console.error('[projects.js] Error repos personales:', reposResult.reason);
+      renderError(grid, 'personal');
+    }
 
-    } catch (err) {
-      console.error('[projects.js] Error al cargar repositorios:', err);
-      renderError(grid);
+    // — Repos de organizaciones —
+    if (orgsResult.status === 'fulfilled') {
+      const orgRepos = orgsResult.value;
+      if (orgRepos.length === 0) {
+        renderEmpty(orgsGrid, 'orgs');
+      } else {
+        renderCards(orgsGrid, orgRepos, 150); // delay inicial mayor para escalonar
+      }
+    } else {
+      console.error('[projects.js] Error repos de orgs:', orgsResult.reason);
+      renderError(orgsGrid, 'orgs');
     }
   },
 
 };
 
 
-function renderSkeletons(grid) {
-  grid.innerHTML = Array(6).fill(0).map(() => `
+/* ─── renderSkeletons ────────────────────────────────────── */
+
+function renderSkeletons(grid, count = 6) {
+  grid.innerHTML = Array(count).fill(0).map(() => `
     <div
       class="project-skeleton"
       aria-busy="true"
@@ -94,17 +123,21 @@ function renderSkeletons(grid) {
 }
 
 
-function renderCards(grid, repos) {
+/* ─── renderCards ────────────────────────────────────────── */
+
+function renderCards(grid, repos, baseDelay = 0) {
   grid.innerHTML = repos.map(repo => buildCardHTML(repo)).join('');
 
   const cards = grid.querySelectorAll('.project-card');
   cards.forEach((card, index) => {
     setTimeout(() => {
       card.classList.add('project-card--visible');
-    }, index * 50);
+    }, baseDelay + index * 50);
   });
 }
 
+
+/* ─── buildCardHTML ──────────────────────────────────────── */
 
 function buildCardHTML(repo) {
   const langBadge = repo.language
@@ -119,6 +152,10 @@ function buildCardHTML(repo) {
       </div>
     `
     : `<div class="project-card__lang"></div>`;
+
+  const orgBadge = repo.org
+    ? `<span class="project-card__org-badge">${repo.org}</span>`
+    : '';
 
   const statsRow = `
     <div class="project-card__stats">
@@ -148,7 +185,7 @@ function buildCardHTML(repo) {
       </span>
 
       <span class="project-card__date" aria-label="Última actualización: ${repo.updatedLabel}">
-        🕐 ${repo.updatedLabel}
+        ${repo.updatedLabel}
       </span>
     </div>
   `;
@@ -156,7 +193,10 @@ function buildCardHTML(repo) {
   return `
     <article class="project-card" role="article">
 
-      ${langBadge}
+      <div class="project-card__top">
+        ${langBadge}
+        ${orgBadge}
+      </div>
 
       <h2 class="project-card__name">${repo.displayName}</h2>
 
@@ -168,20 +208,14 @@ function buildCardHTML(repo) {
 
       <div class="project-card__footer">
         
-          href="${repo.url}"
+         <a href="${repo.url}"
           class="project-card__link"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ver ${repo.displayName} en GitHub"
         >
           Ver en GitHub
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round"
-            aria-hidden="true">
-            <line x1="7" y1="17" x2="17" y2="7"/>
-            <polyline points="7 7 17 7 17 17"/>
-          </svg>
+          
         </a>
       </div>
 
@@ -190,30 +224,40 @@ function buildCardHTML(repo) {
 }
 
 
-function renderEmpty(grid) {
+/* ─── renderEmpty ────────────────────────────────────────── */
+
+function renderEmpty(grid, type = 'personal') {
+  const isOrg = type === 'orgs';
   grid.innerHTML = `
     <div class="projects-empty">
-      <span class="projects-empty__icon" aria-hidden="true">📭</span>
-      <p class="projects-empty__title">Sin proyectos disponibles</p>
+      <span class="projects-empty__icon" aria-hidden="true">${isOrg ? '🏢' : '📭'}</span>
+      <p class="projects-empty__title">
+        ${isOrg ? 'Sin repos de organizaciones' : 'Sin proyectos disponibles'}
+      </p>
       <p class="projects-empty__text">
-        Aún no hay proyectos públicos disponibles. Puedes ver el perfil
-        directamente en GitHub.
+        ${isOrg
+          ? 'No se encontraron repositorios públicos en tus organizaciones.'
+          : 'Aún no hay proyectos públicos disponibles.'}
       </p>
       
-        href="https://github.com/JoseRivera-07"
+        <a href="https://github.com/JoseRivera-07"
         class="projects-empty__link"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Ver perfil de Jose Rivera en GitHub"
       >
-        Ver perfil en GitHub →
+        Ver perfil en GitHub 
       </a>
     </div>
   `;
 }
 
 
-function renderError(grid) {
+/* ─── renderError ────────────────────────────────────────── */
+
+function renderError(grid, type = 'personal') {
+  const cacheKey = type === 'orgs' ? 'github_orgs_repos' : 'github_repos';
+
   grid.innerHTML = `
     <div class="projects-error" role="alert">
       <span class="projects-error__icon" aria-hidden="true">⚠️</span>
@@ -222,7 +266,7 @@ function renderError(grid) {
         Hubo un problema al conectar con GitHub. Verifica tu conexión
         e inténtalo de nuevo.
       </p>
-      <button class="projects-error__btn" id="retry-btn">
+      <button class="projects-error__btn" id="retry-btn-${type}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round"
@@ -235,21 +279,23 @@ function renderError(grid) {
     </div>
   `;
 
-  document.getElementById('retry-btn')?.addEventListener('click', () => {
-    sessionStorage.removeItem('github_repos');
-    renderSkeletons(grid);
+  const fetchFn = type === 'orgs' ? fetchAllOrgRepos : fetchRepos;
 
-    fetchRepos()
+  document.getElementById(`retry-btn-${type}`)?.addEventListener('click', () => {
+    sessionStorage.removeItem(cacheKey);
+    renderSkeletons(grid, type === 'orgs' ? 3 : 6);
+
+    fetchFn()
       .then(repos => {
         if (repos.length === 0) {
-          renderEmpty(grid);
+          renderEmpty(grid, type);
         } else {
           renderCards(grid, repos);
         }
       })
       .catch(err => {
-        console.error('[projects.js] Error en reintento:', err);
-        renderError(grid);
+        console.error(`[projects.js] Error en reintento (${type}):`, err);
+        renderError(grid, type);
       });
   });
 }

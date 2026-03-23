@@ -1,0 +1,222 @@
+/* ============================================================
+   SKILLS.CSS — Sección de Skills
+   Módulo 04 · Jose Rivera Portfolio
+   ============================================================
+   Regla de oro: CERO valores hardcodeados.
+   Todo color, espacio y tipografía viene de variables.css.
+   ============================================================ */
+
+
+/* ─── BLOQUE 1: Sección contenedora ─────────────────────── */
+/* Mismo padding vertical que projects-section.             */
+
+.skills-section {
+  padding-block: var(--space-16) var(--space-20);
+}
+
+
+/* ─── BLOQUE 2: Encabezado ───────────────────────────────── */
+/* Patrón idéntico a .projects-header: label + título +
+   underline verde en la palabra clave + subtítulo.         */
+
+.skills-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.skills-header__label {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-accent);
+  margin-bottom: var(--space-3);
+}
+
+.skills-header__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-4);
+}
+
+/* Palabra clave en verde con underline — mismo patrón que projects */
+.skills-header__title span {
+  position: relative;
+  display: inline-block;
+  color: var(--color-primary);
+}
+
+.skills-header__title span::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.skills-header__subtitle {
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: 480px;
+  margin-inline: auto;
+  line-height: var(--leading-relaxed);
+}
+
+
+/* ─── BLOQUE 3: Grid de grupos ───────────────────────────── */
+/* Desktop/tablet (>768px): 2 columnas.
+   Mobile (<768px): 1 columna.                              */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-12);
+}
+
+@media (max-width: 768px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .skills-header__title {
+    font-size: var(--text-3xl);
+  }
+}
+
+
+/* ─── BLOQUE 4: Grupo individual ─────────────────────────── */
+/* Cada grupo lleva: label de categoría + fila de badges.
+   Estado inicial para la animación de entrada.             */
+
+.skills-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  /* Estado inicial: invisible y desplazado hacia abajo */
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* Estado visible — añadido por el Intersection Observer */
+.skills-group--visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 400ms ease,
+    transform 400ms ease;
+}
+
+/* Sin animación si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  .skills-group {
+    opacity: 1;
+    transform: none;
+  }
+
+  .skills-group--visible {
+    transition: none;
+  }
+}
+
+
+/* ─── BLOQUE 5: Label del grupo ──────────────────────────── */
+/* Uppercase pequeño en --color-primary, igual que labels
+   de otras secciones del portafolio.                       */
+
+.skills-group__label {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+
+
+/* ─── BLOQUE 6: Fila de badges ───────────────────────────── */
+/* flex-wrap para que los badges se adapten al ancho
+   disponible en cada columna.                              */
+
+.skills-group__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+
+/* ─── BLOQUE 7: Badge individual ─────────────────────────── */
+/* Pill con ícono SVG + nombre. Sin interactividad activa —
+   son elementos informativos. Hover: borde y color verde. */
+
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-primary);
+  line-height: 1;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+  cursor: default;
+  white-space: nowrap;
+}
+
+/* El SVG del ícono cambia de color al hacer hover */
+.skill-badge__icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+}
+
+.skill-badge:hover {
+  border-color: var(--color-primary);
+}
+
+.skill-badge:hover .skill-badge__icon {
+  color: var(--color-primary);
+}
+
+
+/* ─── BLOQUE 8: Badge de idioma (variante) ───────────────── */
+/* Los badges de idiomas llevan un <small> extra con el
+   nivel. El badge se apila verticalmente y crece en alto. */
+
+.skill-badge--language {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-4);
+  white-space: normal;
+}
+
+.skill-badge--language .skill-badge__top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.skill-badge__level {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-regular);
+  color: var(--text-muted);
+  line-height: var(--leading-normal);
+}

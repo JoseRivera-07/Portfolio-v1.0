@@ -233,8 +233,16 @@ async function navigate(path, pushState = true) {
   // 10. Marcar link activo en la navbar
   setActiveLink(normalizedPath);
 
-  // 11. Scroll al inicio
+// 11. Scroll al inicio
   scrollToTop();
+
+  // 11b. Aplicar traducciones al contenido recién renderizado  ← NUEVO M05
+  // Se llama aquí, después del swap del DOM y antes del fade-in,
+  // para que el texto ya esté traducido cuando la vista aparece.
+  // La guardia opcional (?.） protege si i18n.js no cargó aún.
+  if (window.i18n?.applyTranslations) {
+    window.i18n.applyTranslations();
+  }
 
   // 12. FADE IN de la nueva vista
   await transitionIn();

@@ -49,7 +49,6 @@
 .skills-header__title span {
   position: relative;
   display: inline-block;
-  color: var(--color-primary);
 }
 
 .skills-header__title span::after {

@@ -13,13 +13,6 @@ export default {
 
   title: 'Jose Rivera · Junior Fullstack Developer',
 
-  /* ──────────────────────────────────────────────────────────
-     RENDER — Retorna el HTML completo del hero.
-     Es exactamente el mismo markup del Módulo 01,
-     preservando todas las clases CSS y atributos ARIA.
-     Solo cambia href="#proyectos" → href="/proyectos"
-     para que el router lo intercepte correctamente.
-  ────────────────────────────────────────────────────────── */
   render() {
     return `
       <!-- ════════════════════════════════════════════════════
@@ -33,28 +26,30 @@ export default {
             <div class="hero__content">
 
               <!-- Disponibilidad -->
-              <span class="hero__availability" aria-label="Disponible para trabajar">
+              <span class="hero__availability"
+                    data-i18n-aria="hero.available"
+                    aria-label="Available for work">
                 <span class="hero__availability-dot" aria-hidden="true"></span>
-                Disponible para trabajar
+                <span data-i18n="hero.available">Available for work</span>
               </span>
 
-              <!-- Nombre principal -->
+              <!-- Nombre principal — no se traduce -->
               <h1 class="hero__headline">Jose Rivera</h1>
 
-              <!-- Rol -->
-              <p class="hero__subtitle">Junior Fullstack Developer</p>
+              <!-- Rol — igual en ambos idiomas -->
+              <p class="hero__subtitle" data-i18n="hero.role">Junior Fullstack Developer</p>
 
               <!-- Bio -->
-              <p class="hero__bio">
-                Construyo aplicaciones web completas, desde la interfaz hasta la base de datos.
-                Apasionado por el código limpio, las buenas prácticas y seguir aprendiendo cada día
-                desde Medellín, Colombia.
+              <p class="hero__bio" data-i18n="hero.bio">
+                I build complete web applications, from the interface to the database.
+                Passionate about clean code, best practices, and learning every day
+                from Medellín, Colombia.
               </p>
 
               <!-- CTAs + separador + social links -->
               <div class="hero__cta">
-                <a href="/proyectos" class="btn btn-primary">Ver Proyectos</a>
-                <a href="/contacto"  class="btn btn-outline">Contáctame</a>
+                <a href="/proyectos" class="btn btn-primary" data-i18n="hero.cta_projects">View Projects</a>
+                <a href="/contacto"  class="btn btn-outline" data-i18n="hero.cta_contact">Contact Me</a>
 
                 <span class="hero__divider" aria-hidden="true"></span>
 
@@ -101,7 +96,7 @@ export default {
 
                 <!-- Líneas de código -->
                 <div class="hero__code-body">
-                  <span class="hero__code-line"><span class="code-comment">// Junior Fullstack Developer</span></span>
+                  <span class="hero__code-line"><span class="code-comment" data-i18n="hero.code_comment1">// Junior Fullstack Developer</span></span>
                   <span class="hero__code-line">&nbsp;</span>
                   <span class="hero__code-line"><span class="code-keyword">const </span><span class="code-variable">developer</span><span class="code-bracket"> = {</span></span>
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-property">name</span>: <span class="code-string">"Jose Rivera"</span>,</span>
@@ -115,7 +110,7 @@ export default {
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-property">available</span>: <span class="code-value">true</span>,</span>
                   <span class="hero__code-line"><span class="code-bracket">};</span></span>
                   <span class="hero__code-line">&nbsp;</span>
-                  <span class="hero__code-line"><span class="code-comment">// open to opportunities</span><span class="hero__code-cursor"></span></span>
+                  <span class="hero__code-line"><span class="code-comment" data-i18n="hero.code_comment2">// open to opportunities</span><span class="hero__code-cursor"></span></span>
                 </div>
 
               </div>
@@ -125,7 +120,9 @@ export default {
         </div>
 
         <!-- Scroll indicator → apunta a /proyectos via router -->
-        <a href="/proyectos" class="hero__scroll" aria-label="Ir a la sección de proyectos">
+        <a href="/proyectos" class="hero__scroll"
+           data-i18n-aria="hero.scroll_hint"
+           aria-label="Go to the projects section">
           <span>Scroll</span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 5v14M5 12l7 7 7-7"/>
@@ -136,16 +133,8 @@ export default {
     `;
   },
 
-  /* ──────────────────────────────────────────────────────────
-     INIT — Lógica post-render
-     El hero no tiene interactividad propia. Los clicks en
-     "Ver Proyectos", "Contáctame" y el scroll indicator
-     los captura el event delegation del router en document.
-  ────────────────────────────────────────────────────────── */
   init() {
     // Sin lógica adicional en esta versión del hero.
-    // Aquí se añadirán animaciones de entrada (Módulo 03)
-    // si se deciden implementar con JS.
   }
 
 };

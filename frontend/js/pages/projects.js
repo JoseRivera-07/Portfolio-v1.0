@@ -8,7 +8,7 @@ import { fetchRepos, fetchAllOrgRepos } from '../services/github.js';
 
 export default {
 
-  title: 'Proyectos — Jose Rivera',
+  title: 'Projects — Jose Rivera',
 
   render() {
     return `
@@ -16,12 +16,13 @@ export default {
         <div class="container">
 
           <header class="projects-header">
-            <span class="projects-header__label">Proyectos</span>
-            <h1 class="projects-header__title">
-              Lo que he <span>construido</span>
+            <span class="projects-header__label" data-i18n="projects.label">Projects</span>
+            <h1 class="projects-header__title"
+              data-i18n-html="projects.title">
+              What I've <span>built</span>
             </h1>
-            <p class="projects-header__subtitle">
-              Repositorios públicos desde GitHub — actualizados automáticamente.
+            <p class="projects-header__subtitle" data-i18n="projects.subtitle">
+              Public repositories from GitHub — updated automatically.
             </p>
           </header>
 
@@ -36,8 +37,8 @@ export default {
           <!-- Sección organizaciones -->
           <div id="orgs-section" class="orgs-section" aria-live="polite">
             <div class="orgs-section__header">
-              <span class="projects-header__label">Organizaciones</span>
-              <h2 class="orgs-section__title">Trabajo en equipo</h2>
+              <span class="projects-header__label" data-i18n="projects.orgs_label">Organizations</span>
+              <h2 class="orgs-section__title" data-i18n="projects.orgs_title">Teamwork</h2>
             </div>
             <div
               id="orgs-grid"
@@ -56,11 +57,9 @@ export default {
     const orgsGrid = document.getElementById('orgs-grid');
     if (!grid || !orgsGrid) return;
 
-    // Mostrar skeletons en ambos grids simultáneamente
     renderSkeletons(grid, 6);
     renderSkeletons(orgsGrid, 3);
 
-    // Fetch paralelo: repos personales + repos de orgs
     const [reposResult, orgsResult] = await Promise.allSettled([
       fetchRepos(),
       fetchAllOrgRepos(),
@@ -85,7 +84,7 @@ export default {
       if (orgRepos.length === 0) {
         renderEmpty(orgsGrid, 'orgs');
       } else {
-        renderCards(orgsGrid, orgRepos, 150); // delay inicial mayor para escalonar
+        renderCards(orgsGrid, orgRepos, 150);
       }
     } else {
       console.error('[projects.js] Error repos de orgs:', orgsResult.reason);
@@ -97,13 +96,16 @@ export default {
 
 
 /* ─── renderSkeletons ────────────────────────────────────── */
+/* El aria-label del skeleton usa t() para estar traducido
+   desde el primer frame visible.                           */
 
 function renderSkeletons(grid, count = 6) {
+  const label = window.i18n?.t('projects.loading') ?? 'Loading projects...';
   grid.innerHTML = Array(count).fill(0).map(() => `
     <div
       class="project-skeleton"
       aria-busy="true"
-      aria-label="Cargando proyectos"
+      aria-label="${label}"
       role="article"
     >
       <div class="skeleton-bar skeleton-bar--lang"></div>
@@ -138,8 +140,13 @@ function renderCards(grid, repos, baseDelay = 0) {
 
 
 /* ─── buildCardHTML ──────────────────────────────────────── */
+/* El botón "Ver en GitHub" usa t() directamente porque
+   es contenido dinámico generado por JS, no un nodo
+   estático que applyTranslations() pueda recorrer.        */
 
 function buildCardHTML(repo) {
+  const viewLabel = window.i18n?.t('projects.view_github') ?? 'View on GitHub';
+
   const langBadge = repo.language
     ? `
       <div class="project-card__lang" aria-label="Lenguaje: ${repo.language}">
@@ -207,15 +214,13 @@ function buildCardHTML(repo) {
       ${statsRow}
 
       <div class="project-card__footer">
-        
-         <a href="${repo.url}"
+        <a href="${repo.url}"
           class="project-card__link"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Ver ${repo.displayName} en GitHub"
         >
-          Ver en GitHub
-          
+          ${viewLabel}
         </a>
       </div>
 
@@ -225,28 +230,30 @@ function buildCardHTML(repo) {
 
 
 /* ─── renderEmpty ────────────────────────────────────────── */
+/* Todo el texto sale de t(). Si i18n aún no está listo
+   (caso extremo de carga fuera de orden) hay fallbacks
+   hardcodeados en inglés como segunda línea de defensa.   */
 
 function renderEmpty(grid, type = 'personal') {
   const isOrg = type === 'orgs';
+  const t     = key => window.i18n?.t(key) ?? key;
+
   grid.innerHTML = `
     <div class="projects-empty">
       <span class="projects-empty__icon" aria-hidden="true">${isOrg ? '🏢' : '📭'}</span>
       <p class="projects-empty__title">
-        ${isOrg ? 'Sin repos de organizaciones' : 'Sin proyectos disponibles'}
+        ${isOrg ? t('projects.empty_orgs_title') : t('projects.empty_personal_title')}
       </p>
       <p class="projects-empty__text">
-        ${isOrg
-          ? 'No se encontraron repositorios públicos en tus organizaciones.'
-          : 'Aún no hay proyectos públicos disponibles.'}
+        ${isOrg ? t('projects.empty_orgs_text') : t('projects.empty_personal_text')}
       </p>
-      
-        <a href="https://github.com/JoseRivera-07"
+      <a href="https://github.com/JoseRivera-07"
         class="projects-empty__link"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Ver perfil de Jose Rivera en GitHub"
       >
-        Ver perfil en GitHub 
+        ${t('projects.view_profile')}
       </a>
     </div>
   `;
@@ -257,15 +264,13 @@ function renderEmpty(grid, type = 'personal') {
 
 function renderError(grid, type = 'personal') {
   const cacheKey = type === 'orgs' ? 'github_orgs_repos' : 'github_repos';
+  const t        = key => window.i18n?.t(key) ?? key;
 
   grid.innerHTML = `
     <div class="projects-error" role="alert">
       <span class="projects-error__icon" aria-hidden="true">⚠️</span>
-      <p class="projects-error__title">No se pudieron cargar los proyectos</p>
-      <p class="projects-error__text">
-        Hubo un problema al conectar con GitHub. Verifica tu conexión
-        e inténtalo de nuevo.
-      </p>
+      <p class="projects-error__title">${t('projects.error_title')}</p>
+      <p class="projects-error__text">${t('projects.error_text')}</p>
       <button class="projects-error__btn" id="retry-btn-${type}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2"
@@ -274,7 +279,7 @@ function renderError(grid, type = 'personal') {
           <polyline points="1 4 1 10 7 10"/>
           <path d="M3.51 15a9 9 0 1 0 .49-4.95"/>
         </svg>
-        Reintentar
+        ${t('projects.retry')}
       </button>
     </div>
   `;

@@ -1,0 +1,85 @@
+/* ============================================================
+   I18N.CSS — Estilos del selector de idioma EN | ES
+   Módulo 05 · Jose Rivera Portfolio
+
+   Regla de oro: cero colores hardcodeados.
+   Todo usa tokens de variables.css.
+   ============================================================ */
+
+
+/* ─── Contenedor del switcher ────────────────────────────── */
+/* Flexbox en línea, alineado verticalmente con el
+   theme-toggle que está justo a su derecha.               */
+
+.lang-switcher {
+  display:     flex;
+  align-items: center;
+  gap:         var(--space-1);
+}
+
+
+/* ─── Botones EN / ES ─────────────────────────────────────── */
+/* Sin fondo ni borde. El estado activo/inactivo se comunica
+   solo con peso tipográfico y color — sin elementos visuales
+   extra que compitan con el theme-toggle.                  */
+
+.lang-btn {
+  /* Reset de botón */
+  appearance:  none;
+  background:  none;
+  border:      none;
+  padding:     var(--space-2) var(--space-3);
+  margin:      0;
+
+  /* Tipografía */
+  font-family: var(--font-ui);
+  font-size:   var(--text-sm);
+  font-weight: var(--weight-regular);
+  line-height: 1;
+  color:       var(--text-muted);
+
+  /* Interacción */
+  cursor:      pointer;
+  transition:  color var(--transition-fast);
+
+  /* Área mínima táctil 44×44px (accesibilidad) */
+  min-width:  44px;
+  min-height: 44px;
+  display:    flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-btn:hover {
+  color: var(--color-primary);
+}
+
+.lang-btn:focus-visible {
+  outline:        2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius:  var(--radius-sm);
+}
+
+
+/* ─── Estado activo ──────────────────────────────────────── */
+/* La clase --active la añade setLanguage() en i18n.js.
+   aria-pressed="true" lo gestiona applyTranslations().
+   Ambos cambian juntos — el CSS solo necesita uno de los dos,
+   usamos la clase para no depender de la sincronización
+   del atributo ARIA con el render.                         */
+
+.lang-btn--active {
+  color:       var(--text-primary);
+  font-weight: var(--weight-semibold);
+}
+
+
+/* ─── Divisor "|" ─────────────────────────────────────────── */
+/* aria-hidden="true" en el HTML — es puramente decorativo.  */
+
+.lang-divider {
+  color:       var(--border-color);
+  font-size:   var(--text-sm);
+  line-height: 1;
+  user-select: none;
+}

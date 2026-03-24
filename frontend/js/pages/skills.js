@@ -5,12 +5,14 @@
 
 
 /* ─── BLOQUE 1: Data de skills ───────────────────────────── */
-/* Fuente de verdad local. Ninguna llamada a API.
-   type: 'languages' marca el grupo con diseño especial.    */
+/* groupKey: key de i18n para el nombre del grupo.
+   levelKey: key de i18n para el nivel (solo type:'languages').
+   El motor t() resuelve ambas en tiempo de render.          */
 
 const SKILLS = [
   {
-    group: 'Frontend',
+    group:    'Frontend',
+    groupKey: 'skills.groups.frontend',
     items: [
       {
         name: 'HTML5',
@@ -27,7 +29,8 @@ const SKILLS = [
     ],
   },
   {
-    group: 'Backend',
+    group:    'Backend',
+    groupKey: 'skills.groups.backend',
     items: [
       {
         name: 'Node.js',
@@ -40,7 +43,8 @@ const SKILLS = [
     ],
   },
   {
-    group: 'Base de Datos',
+    group:    'Base de Datos',
+    groupKey: 'skills.groups.database',
     items: [
       {
         name: 'PostgreSQL',
@@ -53,7 +57,8 @@ const SKILLS = [
     ],
   },
   {
-    group: 'Herramientas',
+    group:    'Herramientas',
+    groupKey: 'skills.groups.tools',
     items: [
       {
         name: 'Git',
@@ -74,7 +79,8 @@ const SKILLS = [
     ],
   },
   {
-    group: 'Inteligencia Artificial',
+    group:    'Inteligencia Artificial',
+    groupKey: 'skills.groups.ai',
     items: [
       {
         name: 'Gemini AI',
@@ -83,7 +89,8 @@ const SKILLS = [
     ],
   },
   {
-    group: 'Metodologías',
+    group:    'Metodologías',
+    groupKey: 'skills.groups.methodologies',
     items: [
       {
         name: 'Scrum',
@@ -96,17 +103,18 @@ const SKILLS = [
     ],
   },
   {
-    group: 'Idiomas',
-    type: 'languages',
+    group:    'Idiomas',
+    groupKey: 'skills.groups.languages',
+    type:     'languages',
     items: [
       {
-        name: 'Español',
-        level: 'Nativo',
+        name:     'Español',
+        levelKey: 'skills.levels.native',
         icon: `<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
       },
       {
-        name: 'Inglés',
-        level: 'B1 — lectura técnica fluida',
+        name:     'Inglés',
+        levelKey: 'skills.levels.english_level',
         icon: `<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
       },
     ],
@@ -114,10 +122,9 @@ const SKILLS = [
 ];
 
 
-/* ─── BLOQUE 2: Helper — renderizar un badge ─────────────── */
-/* Devuelve el HTML string de un badge.
-   Si el grupo es 'languages', usa la variante apilada
-   con el nivel visible debajo del nombre.                  */
+/* ─── BLOQUE 2: renderBadge ──────────────────────────────── */
+/* Para badges de idioma usa levelKey para resolver el nivel
+   en el idioma activo. Para el resto, solo nombre e ícono.  */
 
 function renderBadge(item, isLanguage = false) {
   if (isLanguage) {
@@ -127,7 +134,10 @@ function renderBadge(item, isLanguage = false) {
           <span class="skill-badge__icon">${item.icon}</span>
           ${item.name}
         </span>
-        <small class="skill-badge__level">${item.level}</small>
+        <small class="skill-badge__level"
+               data-i18n="${item.levelKey}">
+          ${window.i18n?.t(item.levelKey) ?? item.levelKey}
+        </small>
       </div>
     `;
   }
@@ -141,14 +151,10 @@ function renderBadge(item, isLanguage = false) {
 }
 
 
-/* ─── BLOQUE 3: Helper — renderizar un grupo ─────────────── */
-/* Cada grupo tiene: label de categoría + contenedor de
-   badges. El atributo data-group-index permite escalonar
-   la animación de entrada en init().                       */
-
 function renderGroup(groupData, index) {
   const isLanguage = groupData.type === 'languages';
-  const badges = groupData.items
+  const groupName  = window.i18n?.t(groupData.groupKey) ?? groupData.group;
+  const badges     = groupData.items
     .map(item => renderBadge(item, isLanguage))
     .join('');
 
@@ -156,10 +162,14 @@ function renderGroup(groupData, index) {
     <div
       class="skills-group"
       role="group"
-      aria-label="${groupData.group}"
+      aria-label="${groupName}"
       data-group-index="${index}"
+      data-i18n-aria-group="${groupData.groupKey}"
     >
-      <span class="skills-group__label">${groupData.group}</span>
+      <span class="skills-group__label"
+            data-i18n="${groupData.groupKey}">
+        ${groupName}
+      </span>
       <div class="skills-group__badges">
         ${badges}
       </div>
@@ -174,8 +184,6 @@ export default {
 
   title: 'Skills — Jose Rivera',
 
-  /* render() — construye el HTML completo de la vista.
-     El router lo inyecta en el DOM antes de llamar init(). */
   render() {
     const groups = SKILLS
       .map((group, index) => renderGroup(group, index))
@@ -186,11 +194,12 @@ export default {
         <div class="container">
 
           <header class="skills-header">
-            <span class="skills-header__label">Skills</span>
-            <h1 class="skills-header__title">
+            <span class="skills-header__label" data-i18n="skills.label">Skills</span>
+            <h1 class="skills-header__title"
+                data-i18n-html="skills.title">
               Technologies I <span>work with</span>
             </h1>
-            <p class="skills-header__subtitle">
+            <p class="skills-header__subtitle" data-i18n="skills.subtitle">
               Tools and technologies I use to build fullstack applications.
             </p>
           </header>
@@ -204,16 +213,10 @@ export default {
     `;
   },
 
-  /* init() — llamado por el router después del fade-in,
-     cuando el DOM ya tiene el HTML de la vista.
-     Registra un IntersectionObserver sobre cada .skills-group
-     para añadir la clase --visible al entrar en viewport.  */
   init() {
     const groups = document.querySelectorAll('.skills-group');
     if (!groups.length) return;
 
-    /* Si el usuario prefiere sin movimiento, marcamos
-       todos como visibles de forma inmediata y salimos.   */
     const prefersReduced = window.matchMedia(
       '(prefers-reduced-motion: reduce)'
     ).matches;
@@ -223,23 +226,18 @@ export default {
       return;
     }
 
-    /* Observer: threshold 0.1 — el grupo se activa cuando
-       al menos el 10 % de su área entra en el viewport.
-       El escalonado (delay) se calcula con el índice del
-       grupo para que aparezcan en cascada al hacer scroll. */
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
 
           const index = Number(entry.target.dataset.groupIndex);
-          const delay = index * 80; // 80ms entre grupos
+          const delay = index * 80;
 
           setTimeout(() => {
             entry.target.classList.add('skills-group--visible');
           }, delay);
 
-          // Una vez visible, dejar de observar ese grupo
           observer.unobserve(entry.target);
         });
       },

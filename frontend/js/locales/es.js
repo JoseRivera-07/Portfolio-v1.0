@@ -129,4 +129,15 @@ export default {
   lang: {
     switch_label: 'Seleccionar idioma',
   },
+  chatbot: {
+    toggle_open:   'Abrir chat con Cynthia, asistente de Jose',
+    toggle_close:  'Cerrar chat',
+    header_sub:    'Pregúntame lo que quieras',
+    welcome:       '¡Hola!👋 Soy Cynthia, la asistente de Jose. Pregúntame sobre sus skills, proyectos o experiencia ',
+    placeholder:   'Escribe un mensaje…',
+    send:          'Enviar mensaje',
+    typing:        'Cynthia está escribiendo…',
+    error_network: 'Error de conexión. Revisa tu internet e intenta de nuevo.',
+    error_timeout: 'La respuesta está tardando demasiado. Intenta de nuevo en un momento.',
+  },
 };

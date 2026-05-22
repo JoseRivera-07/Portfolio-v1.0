@@ -1,0 +1,450 @@
+/* ============================================================
+   EXPERIENCE.CSS — Sección de Experiencia / Timeline
+   Módulo 05 · Jose Rivera Portfolio
+   ============================================================
+   Regla de oro: CERO valores hardcodeados.
+   Todo color, espacio y tipografía viene de variables.css.
+   ============================================================ */
+
+
+/* ─── BLOQUE 1: Sección contenedora ─────────────────────── */
+
+.experience-section {
+  padding-block: var(--space-16) var(--space-20);
+}
+
+
+/* ─── BLOQUE 2: Encabezado ───────────────────────────────── */
+/* Patrón idéntico a skills-header y projects-header.        */
+
+.experience-header {
+  text-align: center;
+  margin-bottom: var(--space-12);
+}
+
+.experience-header__label {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-accent);
+  margin-bottom: var(--space-3);
+}
+
+.experience-header__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-extrabold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-4);
+}
+
+.experience-header__title span {
+  position: relative;
+  display: inline-block;
+  color: var(--color-primary);
+}
+
+.experience-header__title span::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.experience-header__subtitle {
+  font-family: var(--font-ui);
+  font-size: var(--text-lg);
+  color: var(--text-muted);
+  max-width: 480px;
+  margin-inline: auto;
+  line-height: var(--leading-relaxed);
+}
+
+
+/* ─── BLOQUE 3: Contenedor del timeline ──────────────────── */
+/* Línea vertical central de 2px en desktop.
+   En mobile desaparece y se sustituye por línea lateral.    */
+
+.timeline {
+  position: relative;
+  max-width: 860px;
+  margin-inline: auto;
+  padding-block: var(--space-4);
+  list-style: none;
+}
+
+/* Línea central — solo desktop */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  background-color: var(--border-color);
+}
+
+
+/* ─── BLOQUE 4: Entrada del timeline ─────────────────────── */
+/* Cada <li> ocupa el ancho completo y posiciona la card
+   a izquierda o derecha mediante modificadores.
+   Estado inicial para la animación de entrada.              */
+
+.experience-entry {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;   /* default: card a la derecha */
+  padding-bottom: var(--space-10);
+
+  /* Estado inicial: invisible y desplazado */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Estado visible — añadido por Intersection Observer */
+.experience-entry--visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 400ms ease,
+    transform 400ms ease;
+}
+
+/* Entrada impar → card a la izquierda en desktop */
+.experience-entry--left {
+  justify-content: flex-start;
+}
+
+
+/* ─── BLOQUE 5: Dot conector ─────────────────────────────── */
+/* Círculo de 14px centrado sobre la línea vertical.
+   Perfora visualmente la línea con --bg-page de fondo.     */
+
+.experience-entry__dot {
+  position: absolute;
+  left: 50%;
+  top: var(--space-6);
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+  background-color: var(--bg-page);
+  border: 2px solid var(--color-primary);
+  transition: background-color var(--transition-base);
+  z-index: 1;
+}
+
+/* Hover desde la card: el dot se rellena */
+.experience-entry:hover .experience-entry__dot {
+  background-color: var(--color-primary);
+}
+
+
+/* ─── BLOQUE 6: Card ─────────────────────────────────────── */
+/* Ocupa el 46% del ancho del timeline para dejar espacio
+   a la línea central. Hover: borde verde.                  */
+
+.experience-card {
+  width: 46%;
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: border-color var(--transition-fast);
+}
+
+.experience-card:hover {
+  border-color: var(--color-primary);
+}
+
+
+/* ─── BLOQUE 7: Cabecera de la card ──────────────────────── */
+/* Fila: institución a la izquierda, período a la derecha.  */
+
+.experience-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.experience-card__institution {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.experience-card__inst-desc {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: var(--space-1);
+}
+
+.experience-card__period {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
+/* ─── BLOQUE 8: Separador ────────────────────────────────── */
+
+.experience-card__divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin-block: var(--space-3);
+}
+
+
+/* ─── BLOQUE 9: Cuerpo de la card ───────────────────────── */
+/* Fila: badge a la izquierda, título a la derecha.         */
+
+.experience-card__body-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.experience-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+
+/* ─── BLOQUE 10: Badge ───────────────────────────────────── */
+/* Tres variantes por modificador de clase.                 */
+
+.experience-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Formación activa: fondo primary, texto blanco */
+.experience-badge--active {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+/* En curso: fondo pale, texto dark */
+.experience-badge--progress {
+  background-color: var(--color-primary-pale);
+  color: var(--color-primary-dark);
+}
+
+/* Base técnica: fondo surface, borde, texto muted */
+.experience-badge--base {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+
+
+/* ─── BLOQUE 11: Lista de bullets ───────────────────────── */
+
+.experience-card__bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.experience-card__bullet {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+/* Cuadrado 3×3px en --color-primary como marcador */
+.experience-card__bullet::before {
+  content: '';
+  display: block;
+  flex-shrink: 0;
+  width: 3px;
+  height: 3px;
+  margin-top: 7px;   /* alineación óptica con la primera línea de texto */
+  background-color: var(--color-primary);
+  border-radius: 1px;
+}
+
+
+/* ─── BLOQUE 12: Bloque Scrum ───────────────────────────── */
+
+.scrum-block {
+  max-width: 860px;
+  margin-inline: auto;
+  margin-top: var(--space-16);
+}
+
+.scrum-block__header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.scrum-block__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.scrum-block__subtitle {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.scrum-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+
+/* ─── BLOQUE 13: Card de ceremonia Scrum ────────────────── */
+
+.scrum-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+
+  /* Estado inicial: invisible y desplazado */
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.scrum-card--visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 400ms ease,
+    transform 400ms ease,
+    border-color var(--transition-fast);
+}
+
+.scrum-card:hover {
+  border-color: var(--color-primary);
+}
+
+.scrum-card__icon {
+  color: var(--text-muted);
+  transition: color var(--transition-fast);
+  line-height: 0;
+}
+
+.scrum-card:hover .scrum-card__icon {
+  color: var(--color-primary);
+}
+
+.scrum-card__name {
+  font-family: var(--font-ui);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+}
+
+.scrum-card__desc {
+  font-family: var(--font-ui);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+
+/* ─── BLOQUE 14: Responsive — Mobile ────────────────────── */
+/* < 768px: línea lateral izquierda, todas las cards
+   ocupan el ancho completo a la derecha de la línea.       */
+
+@media (max-width: 768px) {
+
+  .experience-header__title {
+    font-size: var(--text-3xl);
+  }
+
+  /* Quitar línea central */
+  .timeline::before {
+    left: 10px;
+    transform: none;
+  }
+
+  /* Todas las entries apiladas, card a la derecha */
+  .experience-entry,
+  .experience-entry--left {
+    justify-content: flex-end;
+    padding-left: var(--space-8);
+  }
+
+  /* Dot pegado a la línea lateral */
+  .experience-entry__dot {
+    left: 10px;
+    transform: translateX(-50%);
+  }
+
+  /* Card ocupa casi todo el ancho */
+  .experience-card {
+    width: 100%;
+  }
+
+  .scrum-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ─── BLOQUE 15: prefers-reduced-motion ─────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-entry {
+    opacity: 1;
+    transform: none;
+  }
+
+  .experience-entry--visible {
+    transition: none;
+  }
+
+  .scrum-card {
+    opacity: 1;
+    transform: none;
+  }
+
+  .scrum-card--visible {
+    transition: none;
+  }
+}

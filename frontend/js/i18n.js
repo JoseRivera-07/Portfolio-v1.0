@@ -27,8 +27,8 @@ import es from './locales/es.js';
 
 const LOCALES = { en, es };
 const SUPPORTED_LANGS = ['en', 'es'];
-const STORAGE_KEY     = 'portfolio_lang';
-const DEFAULT_LANG    = 'en';
+const STORAGE_KEY = 'portfolio_lang';
+const DEFAULT_LANG = 'en';
 
 /* El idioma activo vive aquí. Solo se modifica en setLanguage(). */
 let currentLang = DEFAULT_LANG;
@@ -39,8 +39,8 @@ let currentLang = DEFAULT_LANG;
    como fallback visible (útil para detectar keys faltantes). */
 
 function t(key) {
-  const keys  = key.split('.');
-  let   value = LOCALES[currentLang];
+  const keys = key.split('.');
+  let value = LOCALES[currentLang];
 
   for (const k of keys) {
     if (value == null || typeof value !== 'object') {
@@ -68,14 +68,14 @@ function applyTranslations() {
 
   /* — data-i18n → textContent — */
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key  = el.getAttribute('data-i18n');
+    const key = el.getAttribute('data-i18n');
     const text = t(key);
     if (el.textContent !== text) el.textContent = text;
   });
 
   /* — data-i18n-html → innerHTML (textos con <span> u otros tags) — */
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const key  = el.getAttribute('data-i18n-html');
+    const key = el.getAttribute('data-i18n-html');
     el.innerHTML = t(key);
   });
 
@@ -188,6 +188,11 @@ function setLanguage(lang) {
   /* Actualizar UI del botón switcher */
   updateLangSwitcherUI(lang);
 
+  /* Notificar el cambio de idioma globalmente*/
+  document.dispatchEvent(new CustomEvent('i18n:langchange', {
+    detail: { lang }
+  }));
+  
   /* Anunciar a lectores de pantalla */
   announceChange(lang);
 }
@@ -261,6 +266,9 @@ window.i18n = {
   getCurrentLang,
   applyTranslations,
   init,
+  onLanguageChange(callback) {
+    document.addEventListener('i18n:langchange', callback);
+  },
 };
 
 /* ─── ARRANQUE ───────────────────────────────────────────── */

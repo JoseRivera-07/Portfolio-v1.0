@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="css/skills.css" />
   <link rel="stylesheet" href="css/i18n.css" /> <!-- ← NUEVO M05 -->
   <link rel="stylesheet" href="css/experience.css">
-  <link rel="stylesheet" href="css/chatbot.css">
+  
 
   <!-- Favicon SVG inline -->
   <link rel="icon" type="image/svg+xml"
@@ -202,68 +202,7 @@
     </div>
   </footer>
 
-  <!-- ══════════════════════════════════════════════════════
-       CHATBOT WIDGET — Cynthia, asistente de Jose Rivera
-       Siempre visible, independiente del router y las vistas
-       ══════════════════════════════════════════════════════ -->
-  <div id="chatbot-widget" role="complementary" data-i18n-aria="chatbot.toggle_open"
-    aria-label="Open chat with Cynthia, Jose's assistant">
-
-    <!-- Ventana de chat -->
-    <div class="chatbot__window" id="chatbot-window" role="dialog" aria-modal="true"
-      aria-labelledby="chatbot-header-name" aria-hidden="true">
-
-      <!-- Header -->
-      <div class="chatbot__header">
-        <div class="chatbot__header-info">
-          <span class="chatbot__header-dot" aria-hidden="true"></span>
-          <div class="chatbot__header-text">
-            <span class="chatbot__header-name" id="chatbot-header-name">Cynthia</span>
-            <span class="chatbot__header-sub" id="chatbot-header-sub" data-i18n="chatbot.header_sub">Ask me
-              anything</span>
-          </div>
-        </div>
-        <button class="chatbot__close" id="chatbot-close" data-i18n-aria="chatbot.toggle_close" aria-label="Close chat">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Área de mensajes -->
-      <div class="chatbot__messages" id="chatbot-messages" role="log" aria-live="polite" aria-atomic="false"
-        aria-label="Chat messages"></div>
-
-      <!-- Input row -->
-      <div class="chatbot__input-row">
-        <input type="text" class="chatbot__input" id="chatbot-input" data-i18n-placeholder="chatbot.placeholder"
-          placeholder="Write a message…" autocomplete="off" aria-label="Message input" maxlength="500" />
-        <button class="chatbot__send" id="chatbot-send" data-i18n-aria="chatbot.send" aria-label="Send message">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M22 2 11 13M22 2 15 22l-4-9-9-4 20-7z" />
-          </svg>
-        </button>
-      </div>
-
-    </div>
-    <!-- /chatbot__window -->
-
-    <!-- Botón toggle -->
-    <button class="chatbot__toggle" id="chatbot-toggle" data-i18n-aria="chatbot.toggle_open"
-      aria-label="Open chat with Cynthia, Jose's assistant" aria-expanded="false" aria-controls="chatbot-window">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-      </svg>
-      <span class="chatbot__online-dot" aria-hidden="true"></span>
-    </button>
-
-  </div>
-  <!-- /chatbot-widget -->
-
-  <script type="module" src="js/chatbot.js"></script>
+  
   <!-- ─── JS ──────────────────────────────────────────────
        theme.js:  defer, IIFE, NO tocar
        i18n.js:   module, carga ANTES que router.js  ← NUEVO M05

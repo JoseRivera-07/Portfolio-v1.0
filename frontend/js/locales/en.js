@@ -129,15 +129,4 @@ export default {
   lang: {
     switch_label: 'Select language',
   },
-  chatbot: {
-    toggle_open:   'Open chat with Cynthia, Jose\'s assistant',
-    toggle_close:  'Close chat',
-    header_sub:    'Ask me anything',
-    welcome:       'Hi!👋 I\'m Cynthia, Jose\'s assistant. Ask me about his skills, projects, or experience ',
-    placeholder:   'Write a message…',
-    send:          'Send message',
-    typing:        'Cynthia is typing…',
-    error_network: 'Connection error. Please check your internet and try again.',
-    error_timeout: 'The response is taking too long. Please try again in a moment.',
-  },
 };

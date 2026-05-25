@@ -113,6 +113,25 @@ export default {
     label: 'Contacto',
     title: 'Hablemos',
     subtitle: 'Construyamos algo juntos.',
+    available: 'Disponible para trabajar',
+    linkedin_soon: 'Perfil de LinkedIn próximamente.',
+    cards: {
+      whatsapp: {
+        title: 'WhatsApp',
+        desc: '¿Prefieres hablar rápido? Escríbeme directo.',
+        btn: 'Abrir WhatsApp'
+      },
+      email: {
+        title: 'Email',
+        desc: '¿Prefieres el correo? Respondo en menos de 24h.',
+        btn: 'Enviar Email'
+      },
+      github: {
+        title: 'GitHub',
+        desc: 'Revisa mis proyectos públicos y código.',
+        btn: 'Ver Perfil'
+      }
+    }
   },
 
   footer: {

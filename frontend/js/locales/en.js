@@ -111,8 +111,27 @@ export default {
 
   contact: {
     label: 'Contact',
-    title: 'Get in Touch',
+    title: 'Let\'s talk',
     subtitle: "Let's build something together.",
+    available: 'Available for work',
+    linkedin_soon: 'LinkedIn profile coming soon.',
+    cards: {
+      whatsapp: {
+        title: 'WhatsApp',
+        desc: 'Prefer a quick chat? Message me directly.',
+        btn: 'Open WhatsApp'
+      },
+      email: {
+        title: 'Email',
+        desc: 'Prefer email? I usually reply within 24h.',
+        btn: 'Send Email'
+      },
+      github: {
+        title: 'GitHub',
+        desc: 'Check out my public projects and code.',
+        btn: 'View Profile'
+      }
+    }
   },
 
   footer: {

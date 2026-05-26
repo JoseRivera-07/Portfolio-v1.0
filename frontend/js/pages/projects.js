@@ -3,7 +3,7 @@
    Módulo 03 · Jose Rivera Portfolio
    ============================================================ */
 
-import { fetchRepos, fetchAllOrgRepos } from '../services/github.js';
+import { fetchRepos } from '../services/github.js';
 
 
 export default {
@@ -34,64 +34,29 @@ export default {
             aria-atomic="true"
           ></div>
 
-          <!-- Sección organizaciones -->
-          <div id="orgs-section" class="orgs-section" aria-live="polite">
-            <div class="orgs-section__header">
-              <span class="projects-header__label" data-i18n="projects.orgs_label">Organizations</span>
-              <h2 class="orgs-section__title" data-i18n="projects.orgs_title">Teamwork</h2>
-            </div>
-            <div
-              id="orgs-grid"
-              class="projects-grid"
-              aria-atomic="true"
-            ></div>
-          </div>
-
         </div>
       </section>
     `;
   },
 
   async init() {
-    const grid     = document.getElementById('projects-grid');
-    const orgsGrid = document.getElementById('orgs-grid');
-    if (!grid || !orgsGrid) return;
+    const grid = document.getElementById('projects-grid');
+    if (!grid) return;
 
     renderSkeletons(grid, 6);
-    renderSkeletons(orgsGrid, 3);
 
-    const [reposResult, orgsResult] = await Promise.allSettled([
-      fetchRepos(),
-      fetchAllOrgRepos(),
-    ]);
-
-    // — Repos personales —
-    if (reposResult.status === 'fulfilled') {
-      const repos = reposResult.value;
+    try {
+      const repos = await fetchRepos();
       if (repos.length === 0) {
         renderEmpty(grid, 'personal');
       } else {
         renderCards(grid, repos);
       }
-    } else {
-      console.error('[projects.js] Error repos personales:', reposResult.reason);
+    } catch (err) {
+      console.error('[projects.js] Error repos personales:', err);
       renderError(grid, 'personal');
     }
-
-    // — Repos de organizaciones —
-    if (orgsResult.status === 'fulfilled') {
-      const orgRepos = orgsResult.value;
-      if (orgRepos.length === 0) {
-        renderEmpty(orgsGrid, 'orgs');
-      } else {
-        renderCards(orgsGrid, orgRepos, 150);
-      }
-    } else {
-      console.error('[projects.js] Error repos de orgs:', orgsResult.reason);
-      renderError(orgsGrid, 'orgs');
-    }
   },
-
 };
 
 
@@ -236,7 +201,7 @@ function buildCardHTML(repo) {
 
 function renderEmpty(grid, type = 'personal') {
   const isOrg = type === 'orgs';
-  const t     = key => window.i18n?.t(key) ?? key;
+  const t = key => window.i18n?.t(key) ?? key;
 
   grid.innerHTML = `
     <div class="projects-empty">
@@ -264,7 +229,7 @@ function renderEmpty(grid, type = 'personal') {
 
 function renderError(grid, type = 'personal') {
   const cacheKey = type === 'orgs' ? 'github_orgs_repos' : 'github_repos';
-  const t        = key => window.i18n?.t(key) ?? key;
+  const t = key => window.i18n?.t(key) ?? key;
 
   grid.innerHTML = `
     <div class="projects-error" role="alert">

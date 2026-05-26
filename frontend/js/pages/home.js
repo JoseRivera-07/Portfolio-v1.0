@@ -96,16 +96,19 @@ export default {
 
                 <!-- Líneas de código -->
                 <div class="hero__code-body">
-                  <span class="hero__code-line"><span class="code-comment" data-i18n="hero.code_comment1">// Junior Fullstack Developer</span></span>
+                  <span class="hero__code-line"><span class="code-comment" data-i18n="hero.code_comment1">// Junior Fullstack Developer & Data Analyst</span></span>
                   <span class="hero__code-line">&nbsp;</span>
                   <span class="hero__code-line"><span class="code-keyword">const </span><span class="code-variable">developer</span><span class="code-bracket"> = {</span></span>
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-property">name</span>: <span class="code-string">"Jose Rivera"</span>,</span>
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-property">location</span>: <span class="code-string">"Medellín, CO"</span>,</span>
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-property">stack</span>: <span class="code-bracket">[</span></span>
                   <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"HTML"</span>, <span class="code-string">"CSS"</span>,</span>
-                  <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"JavaScript"</span>,</span>
+                  <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"JavaScript"</span></span>
                   <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"PostgreSQL"</span>,</span>
                   <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Gemini AI"</span>,</span>
+                  <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"AWS"</span>,</span>
+                  <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Python"</span>,</span>
+                  <span class="hero__code-line">&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-string">"Apache Spark"</span>,</span>
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-bracket">],</span></span>
                   <span class="hero__code-line">&nbsp;&nbsp;<span class="code-property">available</span>: <span class="code-value">true</span>,</span>
                   <span class="hero__code-line"><span class="code-bracket">};</span></span>

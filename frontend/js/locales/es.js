@@ -11,12 +11,12 @@ export default {
 
   hero: {
     available: 'Disponible para trabajar',
-    role: 'Junior Fullstack Developer',
+    role: 'Junior Fullstack Developer & Data Analyst',
     bio: 'Construyo aplicaciones web completas, desde la interfaz hasta la base de datos. Apasionado por el código limpio, las buenas prácticas y seguir aprendiendo cada día desde Medellín, Colombia.',
     cta_projects: 'Ver Proyectos',
     cta_contact: 'Contáctame',
     scroll_hint: 'Ir a la sección de proyectos',
-    code_comment1: '// Junior Fullstack Developer',
+    code_comment1: '// Junior Fullstack Developer & Data Analyst',
     code_comment2: '// open to opportunities',
   },
 
@@ -50,6 +50,8 @@ export default {
       ai: 'Inteligencia Artificial',
       methodologies: 'Metodologías',
       languages: 'Idiomas',
+      cloud: 'Cloud',
+      data: 'Data & Analytics',
     },
     levels: {
       native: 'Nativo',
